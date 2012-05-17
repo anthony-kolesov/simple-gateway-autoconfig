@@ -117,21 +117,21 @@ sed -i -e '/forwarders {/ a\
                 8.8.4.4;' /etc/bind/named.conf.options
 
 # Setup zones in /etc/bind/named.conf.local
-echo '# Main zone
-zone "${DOMAIN}" {
+echo "# Main zone
+zone \"${DOMAIN}\" {
     type master;
-    file "/etc/bind/db.${DOMAIN}";
+    file \"/etc/bind/db.${DOMAIN}\";
 };
 
-zone "${DNS_REVERSE_NETWORK}.in-addr.arpa" {
+zone \"${DNS_REVERSE_NETWORK}.in-addr.arpa\" {
     type master;
     notify no;
-    file "/etc/bind/db.${DNS_DB_FILE_NETWORK}";
-};' >> /etc/bind/named.conf.local
+    file \"/etc/bind/db.${DNS_DB_FILE_NETWORK}\";
+};" >> /etc/bind/named.conf.local
 
 
 # Setup main zone zone.
-echo '$TTL  604800
+echo "$TTL  604800
 @   IN  SOA ${HOSTNAME}.${DOMAIN}. ${BIND_ADMIN}. (
     201205171   ; Serial
        604800   ; Refresh
@@ -145,10 +145,10 @@ echo '$TTL  604800
 ${HOSTNAME}     IN  A       ${SELF_ADDRESS}
 ntp             IN  A       ${SELF_ADDRESS}
 fs              IN  A       ${SELF_ADDRESS}
-' > /etc/bind/db.${DOMAIN}
+" > /etc/bind/db.${DOMAIN}
 
 # Setup reverse zone.
-echo '$TTL  604800
+echo "$TTL  604800
 @   IN  SOA ${HOSTNAME}.${DOMAIN}. ${BIND_ADMIN}. (
     201205171   ; Serial
        604800   ; Refresh
@@ -160,13 +160,13 @@ echo '$TTL  604800
 @               IN  A       ${SELF_ADDRESS}
 @               IN  AAAA    ::1
 ${SELF_IP}      IN  A       ${HOSTNAME}.${DOMAIN}.
-' > /etc/bind/db.${DNS_DB_FILE_NETWORK}
+" > /etc/bind/db.${DNS_DB_FILE_NETWORK}
 
 # Proper resolv.conf references
-echo '
+echo "
 nameserver 127.0.0.1
 search ${DOMAIN}
-' >> /etc/resolvconf/resolve.conf.d/head
+" >> /etc/resolvconf/resolv.conf.d/head
 
 # Reload DNS.
 /etc/init.d/bind9 force-reload
@@ -181,9 +181,9 @@ if [ $NEED_ROUTING = 1 ]; then
 ufw allow ssh
 ufw enable
 sed -i -e 's/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
-sed -i -e "s/#net\/ipv4\/ip_forward=1/net\/ipv4\/ip_forward=1/" /etc/ufw/sysctl.conf
-sed -i -e "s/#net\/ipv6\/conf\/default\/forwarding=1/net\/ipv6\/conf\/default\/forwarding=1/" /etc/ufw/sysctl.conf
-sed -i -e "s/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwarding=1/" /etc/ufw/sysctl.conf
+sed -i -e 's/#net\/ipv4\/ip_forward=1/net\/ipv4\/ip_forward=1/' /etc/ufw/sysctl.conf
+sed -i -e 's/#net\/ipv6\/conf\/default\/forwarding=1/net\/ipv6\/conf\/default\/forwarding=1/' /etc/ufw/sysctl.conf
+sed -i -e 's/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwarding=1/' /etc/ufw/sysctl.conf
 sed -i -e "/#   ufw-before-forward/ a\
 *nat\
 :POSTROUTING ACCEPT [0:0]\
