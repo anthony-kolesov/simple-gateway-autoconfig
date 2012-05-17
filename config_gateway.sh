@@ -81,7 +81,7 @@ sed -i -e "s/default-lease-time.*$/default-lease-time $DHCP_LEASE_TIME;/" $DHCP_
 sed -i -e "s/max-lease-time.*$/max-lease-time $DHCP_MAX_LEASE_TIME;/" $DHCP_CONF_FILE
 
 # Configure local network.
-echo "subnet $NETWORK netmask $NETMASK {
+echo 'subnet $NETWORK netmask $NETMASK {
     range $DHCP_RANGE_START $DHCP_RANGE_END;
     option routers $GATEWAY;
     option domain-name-servers $SELF_ADDRESS, $DNS_1, $DNS_2;
@@ -93,7 +93,7 @@ echo "subnet $NETWORK netmask $NETMASK {
 #   hardware ethernet $<MAC_ADDRESS_COMMA_DELIMITED>;
 #   fixed-address $<IP_OR_DNS_NAME>;
 #}
-" >> $DHCP_CONF_FILE
+' >> $DHCP_CONF_FILE
 
 # Use new configuration. For some reason DHCP server isn't started after installation.
 start isc-dhcp-server
@@ -109,8 +109,8 @@ if [ $NEED_DNS = 1 ]; then
 apt-get -y install bind9
 
 # Enable forwarding of DNS records in /etc/bind/named.conf.options
-sed -i -e '/\/\/ forwarders {/,/\/\/ };/ \\/\/ //' /etc/bind/named.conf.options
-sed -i -e '/0\.0\.0\.0/ d' /etc/bind/named.options
+sed -i -e '/\/\/ forwarders {/,/\/\/ };/ /\/\/ //' /etc/bind/named.conf.options
+sed -i -e '/0\.0\.0\.0/ d' /etc/bind/named.conf.options
 sed -i -e '/forwarders {/ a\
                 84.52.107.107;\
                 8.8.8.8;\
@@ -127,7 +127,7 @@ zone "${DNS_REVERSE_NETWORK}.in-addr.arpa" {
     type master;
     notify no;
     file "/etc/bind/db.${DNS_DB_FILE_NETWORK}";
-};' >>> /etc/bind/named.conf.local
+};' >> /etc/bind/named.conf.local
 
 
 # Setup main zone zone.
