@@ -22,6 +22,7 @@ EXTERNAL_DEV='eth1'
 INTERNAL_DEV='eth0'
 
 # Local network configuration
+HOSTNAME='gateway'
 DOMAIN='prostor'
 NETWORK='10.0.0.0'
 DNS_REVERSE_NETWORK='0.0.10'
@@ -35,6 +36,7 @@ SELF_ADDRESS='10.0.0.1'
 GATEWAY=$SELF_ADDRESS
 DNS_1='8.8.8.8'
 DNS_2='8.8.4.4'
+BIND_ADMIN='kolesov.3253838.ru'
 
 # Additional configuration
 DHCP_CONF_FILE='/etc/dhcp/dhcpd.conf'
@@ -114,19 +116,21 @@ zone "${DNS_REVERSE_NETWORK}.in-addr.arpa" {
 
 # setup zone and reverse zone
 echo '$TTL  604800
-@   IN  SOA gateway-test.prostor. kolesov.3253838.ru. (
-    201205031   ; Serial
-    604800      ; Refresh
-    86400       ; Retry
-    2419200     ; Expire
-    604800  )   ; Negative Cache TTL
+@   IN  SOA ${HOSTNAME}.${DOMAIN}. #{BIND_ADMIN}. (
+    201205171   ; Serial
+       604800   ; Refresh
+        86400   ; Retry
+      2419200   ; Expire
+       604800 ) ; Negative Cache TTL
 ;
-@               IN  NS      gateway-test.prostor.
-@               IN  A       192.168.3.1
+@               IN  NS      ${HOSTNAME}.${DOMAIN}.
+@               IN  A       ${SELF_ADDRESS}
 @               IN  AAAA    ::1
-gateway-test    IN  A       192.168.3.1
-gateway-client  IN  A       192.168.3.100
-' > /etc/bind/db.prostor
+${HOSTNAME}     IN  A       ${SELF_ADDRESS}
+ntp             IN  A       ${SELF_ADDRESS}
+fs              IN  A       ${SELF_ADDRESS}
+' > /etc/bind/db.${DOMAIN}
+
 echo '$TTL  604800
 @   IN  SOA gateway-test.prostor. kolesov.3253838.ru. (
     201205031   ; Serial
