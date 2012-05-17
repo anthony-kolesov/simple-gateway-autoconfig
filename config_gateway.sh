@@ -88,7 +88,15 @@ reload isc-dhcp-server
 # DNS
 #
 apt-get -y install bind9
+
 # Enable forwarding of DNS records in /etc/bind/named.conf.options
+sed -i -e '/\/\/ forwarders {/,/\/\/ };/ \\/\/ //' /etc/bind/named.conf.options
+sed -i -e '/0\.0\.0\.0/ d' /etc/bind/named.options
+sed -i -e '/forwarders {/ a\
+                84.52.107.107;\
+                8.8.8.8;\
+                8.8.4.4;' /etc/bind/named.conf.options
+
 echo 'zone "prostor" {
     type master;
     file "/etc/bind/db.prostor";
@@ -145,6 +153,5 @@ sed -i -e "s/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwardin
 
 # Allow DNS only for local network.
 ufw allow from 192.168.3.0/24 to any port 53
-
 
 
