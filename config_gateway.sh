@@ -109,7 +109,7 @@ if [ $NEED_DNS = 1 ]; then
 apt-get -y install bind9
 
 # Enable forwarding of DNS records in /etc/bind/named.conf.options
-sed -i -e '/\/\/ forwarders {/,/\/\/ };/ /\/\/ //' /etc/bind/named.conf.options
+sed -i -e '/\/\/ forwarders {/,/\/\/ };/ s/\/\/ //' /etc/bind/named.conf.options
 sed -i -e '/0\.0\.0\.0/ d' /etc/bind/named.conf.options
 sed -i -e '/forwarders {/ a\
                 84.52.107.107;\
@@ -161,6 +161,12 @@ echo '$TTL  604800
 @               IN  AAAA    ::1
 ${SELF_IP}      IN  A       ${HOSTNAME}.${DOMAIN}.
 ' > /etc/bind/db.${DNS_DB_FILE_NETWORK}
+
+# Proper resolv.conf references
+echo '
+nameserver 127.0.0.1
+search ${DOMAIN}
+' >> /etc/resolvconf/resolve.conf.d/head
 
 # Reload DNS.
 /etc/init.d/bind9 force-reload
