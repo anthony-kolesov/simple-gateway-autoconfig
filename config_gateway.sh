@@ -167,6 +167,7 @@ echo "
 nameserver 127.0.0.1
 search ${DOMAIN}
 " >> /etc/resolvconf/resolv.conf.d/head
+resolvconf -u
 
 # Reload DNS.
 /etc/init.d/bind9 force-reload
