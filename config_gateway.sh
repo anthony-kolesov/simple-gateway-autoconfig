@@ -29,6 +29,7 @@ DNS_REVERSE_NETWORK='0.0.10'
 DNS_DB_FILE_NETWORK='10'
 SELF_IP='1'
 NETMASK='255.255.255.0'
+NETMASK_BITS='24'
 DHCP_RANGE_START='10.0.0.100'
 DHCP_RANGE_END='10.0.0.199'
 DHCP_LEASE_TIME='86400'
@@ -49,6 +50,7 @@ DHCP_CONF_FILE='/etc/dhcp/dhcpd.conf'
 apt-get -y install ntp
 # Use russian NTP servers instead of Ubuntus.
 sed -i -e "s/ubuntu.pool.ntp.org/ru.pool.ntp.org/" /etc/ntp.conf
+/etc/init.d/ntp force-reload
 
 
 #
@@ -147,20 +149,26 @@ echo '$TTL  604800
 ${SELF_IP}      IN  A       ${HOSTNAME}.${DOMAIN}.
 ' > /etc/bind/db.${DNS_DB_FILE_NETWORK}
 
+# Reload DNS.
+/etc/init.d/bind9 force-reload
+
+
+#
 # Allow forwarding with UFW
+#
 ufw allow ssh
 ufw enable
 sed -i -e 's/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
 sed -i -e "s/#net\/ipv4\/ip_forward=1/net\/ipv4\/ip_forward=1/" /etc/ufw/sysctl.conf
 sed -i -e "s/#net\/ipv6\/conf\/default\/forwarding=1/net\/ipv6\/conf\/default\/forwarding=1/" /etc/ufw/sysctl.conf
 sed -i -e "s/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwarding=1/" /etc/ufw/sysctl.conf
-# Add this to /etc/ufw/before.rules
-# *nat
-# :POSTROUTING ACCEPT [0:0]
-# # Forward traffic from eth1 through eth0.
-# -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
-# COMMIT
+sed -i -e "/#   ufw-before-forward/ a\
+*nat\
+:POSTROUTING ACCEPT [0:0]\
+# Forward traffic from internal through to external.\
+-A POSTROUTING -s ${NETWORK}/${NETMASK_BITS} -o ${EXTERNAL_DEV} -j MASQUERADE\
+COMMIT" /etc/ufw/before.rules
 
 # Allow DNS only for local network.
-ufw allow from 192.168.3.0/24 to any port 53
+ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
 
