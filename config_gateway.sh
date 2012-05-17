@@ -95,8 +95,8 @@ echo "subnet $NETWORK netmask $NETMASK {
 #}
 " >> $DHCP_CONF_FILE
 
-# Use new configuration
-reload isc-dhcp-server
+# Use new configuration. For some reason DHCP server isn't started after installation.
+start isc-dhcp-server
 
 fi
 
