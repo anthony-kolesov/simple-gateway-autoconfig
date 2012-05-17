@@ -27,6 +27,7 @@ DOMAIN='prostor'
 NETWORK='10.0.0.0'
 DNS_REVERSE_NETWORK='0.0.10'
 DNS_DB_FILE_NETWORK='10'
+SELF_IP='1'
 NETMASK='255.255.255.0'
 DHCP_RANGE_START='10.0.0.100'
 DHCP_RANGE_END='10.0.0.199'
@@ -114,9 +115,9 @@ zone "${DNS_REVERSE_NETWORK}.in-addr.arpa" {
 };' >>> /etc/bind/named.conf.local
 
 
-# setup zone and reverse zone
+# Setup main zone zone.
 echo '$TTL  604800
-@   IN  SOA ${HOSTNAME}.${DOMAIN}. #{BIND_ADMIN}. (
+@   IN  SOA ${HOSTNAME}.${DOMAIN}. ${BIND_ADMIN}. (
     201205171   ; Serial
        604800   ; Refresh
         86400   ; Retry
@@ -131,20 +132,20 @@ ntp             IN  A       ${SELF_ADDRESS}
 fs              IN  A       ${SELF_ADDRESS}
 ' > /etc/bind/db.${DOMAIN}
 
+# Setup reverse zone.
 echo '$TTL  604800
-@   IN  SOA gateway-test.prostor. kolesov.3253838.ru. (
-    201205031   ; Serial
-    604800      ; Refresh
-    86400       ; Retry
-    2419200     ; Expire
-    604800  )   ; Negative Cache TTL
+@   IN  SOA ${HOSTNAME}.${DOMAIN}. ${BIND_ADMIN}. (
+    201205171   ; Serial
+       604800   ; Refresh
+        86400   ; Retry
+      2419200   ; Expire
+       604800 ) ; Negative Cache TTL
 ;
-@               IN  NS      gateway-test.prostor.
-@               IN  A       192.168.3.1
+@               IN  NS      ${HOSTNAME}.${DOMAIN}.
+@               IN  A       ${SELF_ADDRESS}
 @               IN  AAAA    ::1
-1   IN  A       gateway-test.prostor.
-100 IN  A       gateway-client.prostor.
-' > /etc/bind/db.192
+${SELF_IP}      IN  A       ${HOSTNAME}.${DOMAIN}.
+' > /etc/bind/db.${DNS_DB_FILE_NETWORK}
 
 # Allow forwarding with UFW
 ufw allow ssh
