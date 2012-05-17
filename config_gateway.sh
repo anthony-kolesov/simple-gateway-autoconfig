@@ -24,6 +24,8 @@ INTERNAL_DEV='eth0'
 # Local network configuration
 DOMAIN='prostor'
 NETWORK='10.0.0.0'
+DNS_REVERSE_NETWORK='0.0.10'
+DNS_DB_FILE_NETWORK='10'
 NETMASK='255.255.255.0'
 DHCP_RANGE_START='10.0.0.100'
 DHCP_RANGE_END='10.0.0.199'
@@ -33,7 +35,6 @@ SELF_ADDRESS='10.0.0.1'
 GATEWAY=$SELF_ADDRESS
 DNS_1='8.8.8.8'
 DNS_2='8.8.4.4'
-
 
 # Additional configuration
 DHCP_CONF_FILE='/etc/dhcp/dhcpd.conf'
@@ -97,16 +98,20 @@ sed -i -e '/forwarders {/ a\
                 8.8.8.8;\
                 8.8.4.4;' /etc/bind/named.conf.options
 
-echo 'zone "prostor" {
+# Setup zones in /etc/bind/named.conf.local
+echo '# Main zone
+zone "${DOMAIN}" {
     type master;
-    file "/etc/bind/db.prostor";
+    file "/etc/bind/db.${DOMAIN}";
 };
 
-zone "3.168.192.in-addr.arpa" {
+zone "${DNS_REVERSE_NETWORK}.in-addr.arpa" {
     type master;
     notify no;
-    file "/etc/bind/db.192";
-}' >>> /etc/bind/named.conf.local
+    file "/etc/bind/db.${DNS_DB_FILE_NETWORK}";
+};' >>> /etc/bind/named.conf.local
+
+
 # setup zone and reverse zone
 echo '$TTL  604800
 @   IN  SOA gateway-test.prostor. kolesov.3253838.ru. (
@@ -153,5 +158,4 @@ sed -i -e "s/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwardin
 
 # Allow DNS only for local network.
 ufw allow from 192.168.3.0/24 to any port 53
-
 
