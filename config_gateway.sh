@@ -77,8 +77,8 @@ sed -i -e "s/example.org/${DOMAIN}/g" $DHCP_CONF_FILE
 sed -i -e "s/#authoritative;/authoritative;/" $DHCP_CONF_FILE
 
 # Set lease times
-sed -i -e "s/default-lease-time.*$/default-lease-time $DHCP_LEASE_TIME" $DHCP_CONF_FILE
-sed -i -e "s/max-lease-time.*$/max-lease-time $DHCP_MAX_LEASE_TIME" $DHCP_CONF_FILE
+sed -i -e "s/default-lease-time.*$/default-lease-time $DHCP_LEASE_TIME/" $DHCP_CONF_FILE
+sed -i -e "s/max-lease-time.*$/max-lease-time $DHCP_MAX_LEASE_TIME/" $DHCP_CONF_FILE
 
 # Configure local network.
 echo "subnet $NETWORK $NETMASK {
