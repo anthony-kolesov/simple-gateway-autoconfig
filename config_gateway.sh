@@ -180,17 +180,16 @@ fi
 #
 if [ $NEED_ROUTING = 1 ]; then
 ufw allow ssh
-ufw enable
 sed -i -e 's/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
 sed -i -e 's/#net\/ipv4\/ip_forward=1/net\/ipv4\/ip_forward=1/' /etc/ufw/sysctl.conf
 sed -i -e 's/#net\/ipv6\/conf\/default\/forwarding=1/net\/ipv6\/conf\/default\/forwarding=1/' /etc/ufw/sysctl.conf
 sed -i -e 's/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwarding=1/' /etc/ufw/sysctl.conf
 sed -i -e "/#   ufw-before-forward/ a\
 *nat\
-:POSTROUTING ACCEPT [0:0]\
-# Forward traffic from internal through to external.\
--A POSTROUTING -s ${NETWORK}/${NETMASK_BITS} -o ${EXTERNAL_DEV} -j MASQUERADE\
-COMMIT" /etc/ufw/before.rules
+ :POSTROUTING ACCEPT [0:0]\
+ # Forward traffic from internal through to external.\
+ -A POSTROUTING -s ${NETWORK}/${NETMASK_BITS} -o ${EXTERNAL_DEV} -j MASQUERADE\
+ COMMIT" /etc/ufw/before.rules
 
 # Allow DNS only for local network.
 ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
