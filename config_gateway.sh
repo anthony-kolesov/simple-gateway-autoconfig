@@ -17,6 +17,12 @@
 # netmask 255.255.255.0
 
 
+# Rhat to do?
+NEED_NTP=1
+NEED_DHCP=1
+NEED_DNS=1
+NEED_ROUTING=1
+
 # Network devices
 EXTERNAL_DEV='eth1'
 INTERNAL_DEV='eth0'
@@ -47,15 +53,18 @@ DHCP_CONF_FILE='/etc/dhcp/dhcpd.conf'
 #
 # NTP
 #
+if [ $NEED_NTP = 1 ]; then
 apt-get -y install ntp
 # Use russian NTP servers instead of Ubuntus.
 sed -i -e "s/ubuntu.pool.ntp.org/ru.pool.ntp.org/" /etc/ntp.conf
 /etc/init.d/ntp force-reload
+fi
 
 
 #
 # DHCP server
 #
+if [ $NEED_DHCP = 1 ]; then
 apt-get -y install isc-dhcp-server
 # Define interface to listen
 sed -i -e "s/INTERFACES=\"\"/INTERFACES=\"${INTERNAL_DEV}\"/" /etc/default/isc-dhcp-server
@@ -89,10 +98,14 @@ echo "subnet $NETWORK $NETMASK {
 # Use new configuration
 reload isc-dhcp-server
 
+fi
+
 
 #
 # DNS
 #
+if [ $NEED_DNS = 1 ]; then
+
 apt-get -y install bind9
 
 # Enable forwarding of DNS records in /etc/bind/named.conf.options
@@ -152,10 +165,13 @@ ${SELF_IP}      IN  A       ${HOSTNAME}.${DOMAIN}.
 # Reload DNS.
 /etc/init.d/bind9 force-reload
 
+fi
+
 
 #
 # Allow forwarding with UFW
 #
+if [ $NEED_ROUTING = 1 ]; then
 ufw allow ssh
 ufw enable
 sed -i -e 's/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
@@ -171,4 +187,10 @@ COMMIT" /etc/ufw/before.rules
 
 # Allow DNS only for local network.
 ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
+
+# Reload configuration
+ufw disable
+ufw enable
+
+fi
 
