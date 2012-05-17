@@ -131,7 +131,7 @@ zone \"${DNS_REVERSE_NETWORK}.in-addr.arpa\" {
 
 
 # Setup main zone zone.
-echo "$TTL  604800
+echo "\$TTL  604800
 @   IN  SOA ${HOSTNAME}.${DOMAIN}. ${BIND_ADMIN}. (
     201205171   ; Serial
        604800   ; Refresh
@@ -148,7 +148,7 @@ fs              IN  A       ${SELF_ADDRESS}
 " > /etc/bind/db.${DOMAIN}
 
 # Setup reverse zone.
-echo "$TTL  604800
+echo "\$TTL  604800
 @   IN  SOA ${HOSTNAME}.${DOMAIN}. ${BIND_ADMIN}. (
     201205171   ; Serial
        604800   ; Refresh
