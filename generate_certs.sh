@@ -11,6 +11,9 @@ s/export KEY_ORG=.*/export KEY_ORG="Nevskiy Prostor"/
 s/export KEY_EMAIL=.*/export KEY_EMAIL="kolesov@3253838.ru"' easy-rsa/vars
 
 pushd easy-rsa
+
+ln -s /etc/openvpn/easy-rsa/openssl-1.0.0.cnf ./openssl.cnf
+
 source vars
 ./clean-all
 ./build-ca
