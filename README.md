@@ -16,8 +16,10 @@ sudo ifup eth0
 
 Parameters are written in `variables.sh`. Modify it if required, you may want to use your custom DNS servers instead of default Google 8.8.8.8 and 8.8.4.4.
 
+Run `./install.sh` first time to install required packages (bind9, isc-dhcp-server, ntp). Then run `./configure.sh` to create configuration files and restart applications to use it.
+
 ## DHCP
 
-Add fixed DHCP addresses to file `dhcpd.fixed.conf`, it will be included in `dhcpd.conf` as is.
+By default lease space start from X.X.X.100 and ends in X.X.X.199. Addresses are lease by default for one day, maximum for 7 days. Add fixed DHCP addresses to file `dhcpd.fixed.conf`, it will be included in `dhcpd.conf` as is.
 
 
