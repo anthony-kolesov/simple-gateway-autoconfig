@@ -121,8 +121,8 @@ gzip -d /etc/openvpn/server.conf.gz
 sed -i -e 's/proto udp/;proto udp/
 s/;proto tcp/proto tcp/
 s/;tls-auth/tls-auth ta.key 0/
-/push/ a\
-push "route '${NETWORK}' '${NETMASK}'
+/push 192.168.20/ a\
+push "route '${NETWORK}' '${NETMASK}'"
 ' /etc/openvpn/server.conf
 sed -i -e "" /etc/openvpn/server.conf
 
