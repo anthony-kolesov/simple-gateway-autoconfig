@@ -104,6 +104,7 @@ sed -i -e '/#   ufw-before-forward/ a\
 *nat\
 :POSTROUTING ACCEPT [0:0]\
 -A POSTROUTING -s '${NETWORK}'/'${NETMASK_BITS}' -o '${EXTERNAL_DEV}' -j MASQUERADE\
+-A POSTROUTING -s '${VPN_NETWORK}'/'${VPN_NETMASK_BITS}' -o '${INTERNAL_DEV}' -j MASQUERADE\
 COMMIT' /etc/ufw/before.rules
 
 # Allow DNS only for local network.
@@ -111,6 +112,21 @@ ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
 
 
 #
+# OpenVPN
+#
+cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/
+gzip -d /etc/openvpn/server.conf.gz
+
+# Edit default configuration.
+sed -i -e 's/proto udp/;proto udp/
+s/;proto tcp/proto tcp/
+s/;tls-auth/tls-auth ta.key 0/
+/push/ a\
+push "route '${NETWORK}' '${NETMASK}'
+' /etc/openvpn/server.conf
+sed -i -e "" /etc/openvpn/server.conf
+
+
 # Use new configurations
 #
 invoke-rc.d ntp restart
@@ -119,4 +135,5 @@ resolvconf -u
 invoke-rc.d bind9 reload
 ufw disable
 ufw enable
+invoke-rc.d openvpn restart
 
