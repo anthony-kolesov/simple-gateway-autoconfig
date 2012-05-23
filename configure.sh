@@ -40,8 +40,57 @@ cp dhcpd.conf ${DHCP_CONF_FILE}
 
 
 #
+# DNS
+#
+
+# Enable forwarding of DNS records in /etc/bind/named.conf.options
+# Remove current content (both commented and uncommetnted).
+sed -i -r -e '/forwarders \{/,/\}/ { /([0-9]+\.){3}[0-9]+/ d }' /etc/bind/named.conf.options
+# Uncomment lines if this is first run configuration.
+sed -i -e '/\/\/ forwarders {/,/\/\/ };/ s/\/\/ //' /etc/bind/named.conf.options
+# Insert custom DNS.
+sed -i -e "/forwarders {/ a\
+                ${DNS_1};\
+                ${DNS_2};" /etc/bind/named.conf.options
+
+# Setup local zones.
+sed -e "s/\${DOMAIN}/${DOMAIN}/
+s/\${NETWORK_PREFIX}/${NETWORK_PREFIX}/
+s/\${NETWORK_PREFIX_REVERSE}/${NETWORK_PREFIX_REVERSE}/
+" named.conf.local.template > named.conf.local
+cp named.conf.local /etc/bind/
+
+# Setup local forward zone.
+sed -e "s/\${DOMAIN}/${DOMAIN}/
+s/\${HOSTNAME}/${HOSTNAME}/
+s/\${BIND_ADMIN}/${BIND_ADMIN}/
+s/\${SELF_ADDRESS_IP4}/${SELF_ADDRESS_IP4}/
+" dns_db.local.template > db.${DOMAIN}
+cp db.${DOMAIN} /etc/bind/
+
+# Setup local reverse zone.
+sed -e "s/\${DOMAIN}/${DOMAIN}/
+s/\${HOSTNAME}/${HOSTNAME}/
+s/\${BIND_ADMIN}/${BIND_ADMIN}/
+s/\${SELF_ADDRESS_IP4_VALUE}/${SELF_ADDRESS_IP4_VALUE}/
+" dns_db.reverse.template > db.${NETWORK_PREFIX_REVERSE}
+cp db.${NETWORK_PREFIX_REVERSE} /etc/bind/
+
+# Proper resolv.conf references
+# Remove any existing.
+sed -r -i -e '/^$/,$ d' /etc/resolvconf/resolv.conf.d/head
+echo "
+nameserver 127.0.0.1
+search ${DOMAIN}
+" >> /etc/resolvconf/resolv.conf.d/head
+
+
+#
 # Use new configurations
 #
 invoke-rc.d ntp restart
 reload isc-dhcp-server
+resolvconf -u
+invoke-rc.d bind9 reload
+
 

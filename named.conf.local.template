@@ -1,0 +1,20 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+# Main zone
+zone "${DOMAIN}" {
+    type master;
+    file "/etc/bind/db.${DOMAIN}";
+};
+
+zone "${NETWORK_PREFIX_REVERSE}.in-addr.arpa" {
+    type master;
+    notify no;
+    file "/etc/bind/db.${NETWORK_PREFIX}";
+};
+

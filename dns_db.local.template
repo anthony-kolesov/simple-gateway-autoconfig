@@ -1,0 +1,14 @@
+$TTL  604800
+@   IN  SOA ${HOSTNAME}.${DOMAIN}. ${BIND_ADMIN}. (
+    201205231   ; Serial
+       604800   ; Refresh
+        86400   ; Retry
+      2419200   ; Expire
+       604800 ) ; Negative Cache TTL
+;
+@               IN  NS      ${HOSTNAME}.${DOMAIN}.
+@               IN  A       ${SELF_ADDRESS_IP4}
+@               IN  AAAA    ::1
+${HOSTNAME}     IN  A       ${SELF_ADDRESS_IP4}
+ntp             IN  A       ${SELF_ADDRESS_IP4}
+
