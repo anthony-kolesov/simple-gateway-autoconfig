@@ -3,6 +3,10 @@
 # Devices
 INTERNAL_DEV='eth0'
 
+# External
+# Place your contry/region poll address (us, europe, ru, etc).
+NTP_POOL='ru.pool.ntp.org'
+
 # Network
 DOMAIN='prostor'
 NETWORK_PREFIX='10.0.0'

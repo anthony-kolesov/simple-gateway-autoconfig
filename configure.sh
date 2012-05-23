@@ -3,6 +3,12 @@
 source variables.sh
 
 #
+# NTP
+#
+sed -i -e "s/ubuntu.pool.ntp.org/${NTP_POOL}/" /etc/ntp.conf
+
+
+#
 # DHCP server
 #
 
