@@ -98,13 +98,13 @@ s/#net\/ipv6\/conf\/default\/forwarding=1/net\/ipv6\/conf\/default\/forwarding=1
 s/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwarding=1/' /etc/ufw/sysctl.conf
 
 # Remove current NAT rules
-sed -i -e '/*nat/,/COMIT/ d' /etc/ufw/before.rules
+sed -i -e '/*nat/,/COMMIT/ d' /etc/ufw/before.rules
 # Add NAT rules.
-sed -i -e "/#   ufw-before-forward/ a\
+sed -i -e '/#   ufw-before-forward/ a\
 *nat\
- :POSTROUTING ACCEPT [0:0]\
- -A POSTROUTING -s ${NETWORK}/${NETMASK_BITS} -o ${EXTERNAL_DEV} -j MASQUERADE\
- COMMIT" /etc/ufw/before.rules
+:POSTROUTING ACCEPT [0:0]\
+-A POSTROUTING -s '${NETWORK}'/'${NETMASK_BITS}' -o '${EXTERNAL_DEV}' -j MASQUERADE\
+COMMIT' /etc/ufw/before.rules
 
 # Allow DNS only for local network.
 ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
