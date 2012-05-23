@@ -7,9 +7,9 @@ source variables.sh
 #
 
 # Define interface to listen
-#sed -i -e "s/INTERFACES=\"\"/INTERFACES=\"${INTERNAL_DEV}\"/" /etc/default/isc-dhcp-server
+sed -i -e "s/INTERFACES=\"\"/INTERFACES=\"${INTERNAL_DEV}\"/" /etc/default/isc-dhcp-server
 # Backup current configuration
-#cp ${DHCP_CONF_FILE} ${DHCP_CONF_FILE}.configure_bak
+cp ${DHCP_CONF_FILE} ${DHCP_CONF_FILE}.configure_bak
 
 # Generate dhcpd.conf file from template and client definitions.
 sed -e "s/\${DOMAIN}/${DOMAIN}/
@@ -30,5 +30,5 @@ if [ -f dhcpd.fixed.conf ]; then
     cat dhcpd.fixed.conf >> dhcpd.conf
 fi;
 
-
+cp dhcpd.conf ${DHCP_CONF_FILE}
 
