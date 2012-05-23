@@ -20,6 +20,7 @@ source vars
 ./build-key-server server
 ./build-dh
 openvpn --genkey --secret ta.key
+cp ta.key /etc/openvpn
 
 pushd keys
 cp server.crt server.key ca.crt dh1024.pem ta.key /etc/openvpn

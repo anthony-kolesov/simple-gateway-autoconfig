@@ -115,12 +115,12 @@ ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
 # OpenVPN
 #
 cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/
-gzip -d /etc/openvpn/server.conf.gz
+gzip -f -d /etc/openvpn/server.conf.gz
 
 # Edit default configuration.
 sed -i -e 's/proto udp/;proto udp/
 s/;proto tcp/proto tcp/
-s/;tls-auth/tls-auth ta.key 0/
+s/;tls-auth/tls-auth/
 /push 192.168.20/ a\
 push "route '${NETWORK}' '${NETMASK}'"
 ' /etc/openvpn/server.conf
