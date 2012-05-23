@@ -38,3 +38,10 @@ fi;
 
 cp dhcpd.conf ${DHCP_CONF_FILE}
 
+
+#
+# Use new configurations
+#
+invoke-rc.d ntp restart
+reload isc-dhcp-server
+
