@@ -86,11 +86,37 @@ search ${DOMAIN}
 
 
 #
+# UFW
+#
+
+ufw allow ssh
+
+# Enable routing.
+sed -i -e 's/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
+sed -i -e 's/#net\/ipv4\/ip_forward=1/net\/ipv4\/ip_forward=1/
+s/#net\/ipv6\/conf\/default\/forwarding=1/net\/ipv6\/conf\/default\/forwarding=1/
+s/#net\/ipv6\/conf\/all\/forwarding=1/net\/ipv6\/conf\/all\/forwarding=1/' /etc/ufw/sysctl.conf
+
+# Remove current NAT rules
+sed -i -e '/*nat/,/COMIT/ d' /etc/ufw/before.rules
+# Add NAT rules.
+sed -i -e "/#   ufw-before-forward/ a\
+*nat\
+ :POSTROUTING ACCEPT [0:0]\
+ -A POSTROUTING -s ${NETWORK}/${NETMASK_BITS} -o ${EXTERNAL_DEV} -j MASQUERADE\
+ COMMIT" /etc/ufw/before.rules
+
+# Allow DNS only for local network.
+ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
+
+
+#
 # Use new configurations
 #
 invoke-rc.d ntp restart
 reload isc-dhcp-server
 resolvconf -u
 invoke-rc.d bind9 reload
-
+ufw disable
+ufw enable
 
