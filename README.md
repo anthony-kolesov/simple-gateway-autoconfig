@@ -12,3 +12,12 @@ sudo ifdown eth0
 sudo ifup eth0
 ```
 
+# Usage
+
+Parameters are written in `variables.sh`. Modify it if required, you may want to use your custom DNS servers instead of default Google 8.8.8.8 and 8.8.4.4.
+
+## DHCP
+
+Add fixed DHCP addresses to file `dhcpd.fixed.conf`, it will be included in `dhcpd.conf` as is.
+
+
