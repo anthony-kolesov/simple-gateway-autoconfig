@@ -16,7 +16,7 @@ sudo ifup eth0
 
 Parameters are written in `variables.sh`. Modify it if required, you may want to use your custom DNS servers instead of default Google 8.8.8.8 and 8.8.4.4.
 
-Run `./install.sh` first time to install required packages (bind9, isc-dhcp-server, ntp). Then run `./configure.sh` to create configuration files and restart applications to use it.
+Run `./install.sh` first time to install required packages (bind9, isc-dhcp-server, ntp). Then run `./generate_certs.sh` for VPN certificates. Then run `./configure.sh` to create configuration files and restart applications to use it.
 
 ## DHCP
 
