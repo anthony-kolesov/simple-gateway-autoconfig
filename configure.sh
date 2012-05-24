@@ -133,13 +133,22 @@ push "route '${NETWORK}' '${NETMASK}'"
 sed -i -e "" /etc/openvpn/server.conf
 
 
+#
+# Samba
+#
+cat smb.base.conf smb.shares.conf > smb.conf
+cp smb.conf /etc/samba/
+
+
+#
 # Use new configurations
 #
-invoke-rc.d ntp restart
-reload isc-dhcp-server
 resolvconf -u
-invoke-rc.d bind9 reload
 ufw disable
 ufw enable
+invoke-rc.d ntp restart
+invoke-rc.d bind9 reload
 invoke-rc.d openvpn restart
+service isc-dhcp-server reload
+service smbd reload
 
