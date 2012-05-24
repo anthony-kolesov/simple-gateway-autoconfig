@@ -31,7 +31,8 @@ Add custom DNS records to files: `dns_db.local_reverse` for forward zone and to 
 Default configuration is very unrestrictive: guest can do anything. Add shares descriptions to file `smb.shares.conf`, it will be appended tp `smb.conf`. 
 
 Example configuration of share that is fully accessible to anyone:
-```[share]
+```
+[share]
 comment     = Public files
 path        = /srv/smb/share
 read only   = no
