@@ -66,6 +66,9 @@ s/\${HOSTNAME}/${HOSTNAME}/
 s/\${BIND_ADMIN}/${BIND_ADMIN}/
 s/\${SELF_ADDRESS_IP4}/${SELF_ADDRESS_IP4}/
 " dns_db.local.template > db.${DOMAIN}
+if [ -f dns_db.local_records ]; then
+    cat dns_db.local_records >> db.${DOMAIN}
+fi
 cp db.${DOMAIN} /etc/bind/
 
 # Setup local reverse zone.
@@ -74,6 +77,9 @@ s/\${HOSTNAME}/${HOSTNAME}/
 s/\${BIND_ADMIN}/${BIND_ADMIN}/
 s/\${SELF_ADDRESS_IP4_VALUE}/${SELF_ADDRESS_IP4_VALUE}/
 " dns_db.reverse.template > db.${NETWORK_PREFIX_REVERSE}
+if [ -f dns_db.reverse_records ]; then
+    cat dns_db.reverse_records >> db.${NETWORK_PREFIX_REVERSE}
+fi
 cp db.${NETWORK_PREFIX_REVERSE} /etc/bind/
 
 # Proper resolv.conf references
