@@ -26,4 +26,17 @@ By default lease space start from X.X.X.100 and ends in X.X.X.199. Addresses are
 
 Add custom DNS records to files: `dns_db.local_reverse` for forward zone and to `dns_db.reverse_records` for reverse zone. They will be appended to the end of corresponding files as is.
 
+## Samba
+
+Default configuration is very unrestrictive: guest can do anything. Add shares descriptions to file `smb.shares.conf`, it will be appended tp `smb.conf`. 
+
+Example configuration of share that is fully accessible to anyone:
+```[share]
+comment     = Public files
+path        = /srv/smb/share
+read only   = no
+guest only  = yes
+guest ok    = yes
+browsable   = yes
+```
 
