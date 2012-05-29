@@ -136,8 +136,19 @@ sed -i -e "" /etc/openvpn/server.conf
 #
 # Samba
 #
+mkdir -p /srv/samba/
 cp smb.base.conf /etc/samba/smb.conf
 
+
+#
+# NFS
+#
+mkdir -p /srv/nfs/
+sed -i -e 's/NEED_SVCGSSD=.*/NEED_SVCGSSD=no/' /etc/default/nfs-kernel-server
+sed -i -e 's/NEED_GSSD=.*/NEED_GSSD=no/
+/NEED_GSSD/ a\
+NEED_IDMAPD=yes' /etc/default/nfs-common
+echo "/srv/nfs $NETWORK/$NETMASK(rw,fsid=0,insecure,no_subtree_check,async)" >> /etc/exports
 
 #
 # Use new configurations
