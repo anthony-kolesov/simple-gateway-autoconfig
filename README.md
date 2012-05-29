@@ -30,7 +30,20 @@ Add custom DNS records to files: `dns_db.local_reverse` for forward zone and to 
 
 NFS confguration taken from here: https://help.ubuntu.com/community/SettingUpNFSHowTo . Default configuration is very unrestrictive: guest can do anything. I'm not sure but it seems that directory that is shared must have 777 permission.
 
-Add samba share as client: `apt-get install cifs-utils`. And for guest mount add to `/etc/fstab`: `//$NAME_OR_IP/$PATH $MOUNTPATH cifs username=guest,password=,uid=1000 0 0`
+Add samba share to client: `apt-get install cifs-utils`. And for guest mount add to `/etc/fstab`:
+```
+//$SAMBA-SERVER-ADDRESS/$PATH $MOUNT-PATH cifs username=guest,password=,uid=1000 0 0
+```
+
+Add NFS share to client: `apt-get install nfs-common`. Add to `/etc/default/nfs-common`:
+```
+NEED_IDMAPD=yes
+NEED_GSSD=no
+```
+Add to `/etc/fstab`:
+```
+$NFS-SERVER-ADDRESS:/$PATH  $MOUNT-PATH nfs4 _netdev,auto 0 0
+```
 
 
 # Add Public Share
