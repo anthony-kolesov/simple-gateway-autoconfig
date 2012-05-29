@@ -9,6 +9,9 @@ sed -i -e 's/export KEY_COUNTRY=.*/export KEY_COUNTRY="RU"/
 s/export KEY_PROVINCE=.*/export KEY_PROVINCE="SP"/
 s/export KEY_CITY=.*/export KEY_CITY="St.Petersburg"/
 s/export KEY_ORG=.*/export KEY_ORG="Nevskiy Prostor"/
+s/export KEY_CN=.*/export KEY_CN="server"/
+s/export KEY_OU=.*/export KEY_OU="central"/
+s/export KEY_NAME=.*/export KEY_NAME="Nevskiy Prostor"/
 s/export KEY_EMAIL=.*/export KEY_EMAIL="kolesov@3253838.ru"/' easy-rsa/vars
 
 pushd easy-rsa
