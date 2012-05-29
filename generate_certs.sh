@@ -28,7 +28,7 @@ openvpn --genkey --secret ta.key
 cp ta.key /etc/openvpn
 
 pushd keys
-cp server.crt server.key ca.crt dh1024.pem ta.key /etc/openvpn
+cp server.crt server.key ca.crt dh1024.pem /etc/openvpn
 popd
 
 popd
