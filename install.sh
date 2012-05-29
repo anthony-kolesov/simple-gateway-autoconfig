@@ -6,5 +6,5 @@ apt-get -y install ntp isc-dhcp-server bind9 openvpn samba nfs-kernel-server
 cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.example
 
 # DHCP server isn't started after installation.
-start isc-dhcp-server
+service isc-dhcp-server start
 

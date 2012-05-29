@@ -162,6 +162,7 @@ ufw enable
 invoke-rc.d ntp restart
 invoke-rc.d bind9 reload
 invoke-rc.d openvpn restart
-service isc-dhcp-server reload
+service isc-dhcp-server stop # If DHCP wasn't started after installation `reload` fails.
+service isc-dhcp-server start
 service smbd reload
 
