@@ -150,7 +150,7 @@ s/NEED_GSSD=.*/NEED_GSSD=no/
 /NEED_GSSD/ a\
 NEED_IDMAPD=yes' /etc/default/nfs-common
 # Remove current line if exists and add new.
-sed '/\/srv\/nfs/ d' /etc/exports
+sed -i -e '/\/srv\/nfs/ d' /etc/exports
 echo "/srv/nfs $NETWORK/$NETMASK(rw,fsid=0,insecure,no_subtree_check,async)" >> /etc/exports
 
 #
