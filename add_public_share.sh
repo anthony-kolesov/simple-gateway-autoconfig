@@ -6,8 +6,8 @@ NETWORK=$3
 COMMENT=$4
 
 # Add Samba directory.
-mkdir -p /srv/samba/$NAME/
-ln -s $DIR_PAth /srv/samba/$NAME/
+mkdir -p /srv/samba/
+ln -s $DIR_PATH /srv/samba/$NAME
 
 # Add Samba share.
 echo "
