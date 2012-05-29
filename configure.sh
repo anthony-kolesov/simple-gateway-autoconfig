@@ -95,7 +95,12 @@ search ${DOMAIN}
 # UFW
 #
 
+ufw default deny
 ufw allow ssh
+# Allow DNS only for local network.
+ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
+ufw allow from ${NETWORK}/${NETMASK_BITS} to any port ${SAMBA_PORT}
+ufw allow from ${NETWORK}/${NETMASK_BITS} to any port ${NFS_PORT}
 
 # Enable routing.
 sed -i -e 's/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
@@ -112,9 +117,6 @@ sed -i -e '/#   ufw-before-forward/ a\
 -A POSTROUTING -s '${NETWORK}'/'${NETMASK_BITS}' -o '${EXTERNAL_DEV}' -j MASQUERADE\
 -A POSTROUTING -s '${VPN_NETWORK}'/'${VPN_NETMASK_BITS}' -o '${INTERNAL_DEV}' -j MASQUERADE\
 COMMIT' /etc/ufw/before.rules
-
-# Allow DNS only for local network.
-ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
 
 
 #
