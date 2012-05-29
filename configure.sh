@@ -136,8 +136,7 @@ sed -i -e "" /etc/openvpn/server.conf
 #
 # Samba
 #
-cat smb.base.conf smb.shares.conf > smb.conf
-cp smb.conf /etc/samba/
+cp smb.base.conf /etc/samba/smb.conf
 
 
 #
