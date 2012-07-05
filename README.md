@@ -24,7 +24,7 @@ By default lease space start from X.X.X.100 and ends in X.X.X.199. Addresses are
 
 ## DNS
 
-Add custom DNS records to files: `dns_db.local_reverse` for forward zone and to `dns_db.reverse_records` for reverse zone. They will be appended to the end of corresponding files as is.
+Add custom DNS records to files: `dns_db.local_records` for forward zone and to `dns_db.reverse_records` for reverse zone. They will be appended to the end of corresponding files as is.
 
 ## Sharing
 
