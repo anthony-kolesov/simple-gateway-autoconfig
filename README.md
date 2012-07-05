@@ -49,7 +49,7 @@ $NFS-SERVER-ADDRESS:/$PATH  $MOUNT-PATH nfs4 _netdev,auto 0 0
 # Add Public Share
 To add public share to NFS and Samba run `add_public_share.sh` for each share. Run this script only after `configure.sh`. Added share will be available to write and read for anybody in the internal network. For network shares it is best to `source variables.sh` and then use variables `$NETWORK` and `$NETMASK`.
 ```
-./add_public_share.sh $NAME $PATH                   $INTERNAL_NETWORK/$NETMASK  $COMMENT
+./add_public_share.sh $NAME $PATH                   $NETWORK/$NETMASK  $COMMENT
 ./add_public_share.sh share /mnt/data_disk/share/   10.0.0.0/24                 "This is public files."
 ```
 
