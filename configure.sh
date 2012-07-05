@@ -25,7 +25,7 @@ s/\${NETWORK}/${NETWORK}/
 s/\${NETMASK}/${NETMASK}/
 s/\${RANGE_START}/${RANGE_START}/
 s/\${RANGE_END}/${RANGE_END}/
-s/\${GATEWAY}/${SELF_ADDRESS_IP4}/
+s/\${GATEWAY}/${GATEWAY_IP4}/
 s/\${DNS_1}/${SELF_ADDRESS_IP4}/
 s/\${DNS_2}/${DNS_1}/
 s/\${DNS_3}/${DNS_2}/
