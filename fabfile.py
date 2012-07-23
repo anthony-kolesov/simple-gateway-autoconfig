@@ -2,7 +2,8 @@ from fabric.api import *
 
 
 # Configuration variables.
-env.bind_backup_file_path = '~/bind_config_backup.tar.bz2'
+if 'bind_backup_file_path' not in env:
+    env.bind_backup_file_path = '~/bind_config_backup.tar.bz2'
 
 
 def backup_bind_configuration():
