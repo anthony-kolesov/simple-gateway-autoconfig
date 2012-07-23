@@ -96,11 +96,11 @@ search ${DOMAIN}
 #
 
 ufw default deny
-ufw allow ssh
+ufw allow from ${NETWORK}/${NETMASK_BITS} to ${SELF_ADDRESS_IP4} port ${SSH_PORT}
 # Allow DNS only for local network.
-ufw allow from ${NETWORK}/${NETMASK_BITS} to any port 53
-ufw allow from ${NETWORK}/${NETMASK_BITS} to any port ${SAMBA_PORT}
-ufw allow from ${NETWORK}/${NETMASK_BITS} to any port ${NFS_PORT}
+ufw allow from ${NETWORK}/${NETMASK_BITS} to ${SELF_ADDRESS_IP4} port ${DNS_PORT}
+ufw allow from ${NETWORK}/${NETMASK_BITS} to ${SELF_ADDRESS_IP4} port ${SAMBA_PORT}
+ufw allow from ${NETWORK}/${NETMASK_BITS} to ${SELF_ADDRESS_IP4} port ${NFS_PORT}
 
 # Enable routing.
 sed -i -e 's/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
