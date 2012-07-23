@@ -8,3 +8,10 @@ cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.example
 # DHCP server isn't started after installation.
 service isc-dhcp-server start
 
+
+#
+# Samba
+#
+mkdir -p /srv/samba/
+cp smb.base.conf /etc/samba/smb.conf
+

@@ -136,13 +136,6 @@ sed -i -e "" /etc/openvpn/server.conf
 
 
 #
-# Samba
-#
-mkdir -p /srv/samba/
-cp smb.base.conf /etc/samba/smb.conf
-
-
-#
 # NFS
 #
 mkdir -p /srv/nfs/
