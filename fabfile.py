@@ -5,6 +5,9 @@ from fabric.api import *
 if 'bind_backup_file_path' not in env:
     env.bind_backup_file_path = '~/bind_config_backup.tar.bz2'
 
+def bind_install():
+    "Installs BIND9 DNS server to the system."
+    sudo('apt-get install bind9')
 
 def bind_backup():
     """Backup current Bind configuration files. Stores current BIND configuration
