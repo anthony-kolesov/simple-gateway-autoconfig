@@ -10,5 +10,5 @@ $TTL  604800
 @               IN  A       ${SELF_ADDRESS_IP4}
 @               IN  AAAA    ::1
 ${HOSTNAME}     IN  A       ${SELF_ADDRESS_IP4}
-ntp             IN  CNAME   ${HOSTNAME}
+ntp             IN  A       ${SELF_ADDRESS_IP4}
 

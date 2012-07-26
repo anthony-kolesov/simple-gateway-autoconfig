@@ -15,6 +15,6 @@ zone "${DOMAIN}" {
 zone "${NETWORK_PREFIX_REVERSE}.in-addr.arpa" {
     type master;
     notify no;
-    file "/etc/bind/db.${NETWORK_PREFIX}";
+    file "/etc/bind/db.${NETWORK_PREFIX_REVERSE}";
 };
 
