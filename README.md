@@ -53,4 +53,10 @@ To add public share to NFS and Samba run `add_public_share.sh` for each share. R
 ./add_public_share.sh share /mnt/data_disk/share/   10.0.0.0/24             "This is public files."
 ```
 
+# DNS
+
+* `dns\_install`: installs dns server.
+* `dns\_backup`: makes a backup copy of current DNS server configurations. Stores it in `~/dns_config_backup.tar.bz2`. Filepath can be modified with variable `dns_backup_file\_path`.
+* `dns\_restore`: restores DNS server configuration from archive created with `dns\_backup`.
+
 
