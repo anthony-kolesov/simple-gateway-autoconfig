@@ -1,4 +1,4 @@
-# Prerequisites
+# Postrequisites
 
 This scripts and configurations are developed for Ubuntu server 12.04.
 
