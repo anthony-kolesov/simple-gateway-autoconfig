@@ -59,12 +59,11 @@ To add public share to NFS and Samba run `add_public_share.sh` for each share. R
 * `dns_backup`: makes a backup copy of current DNS server configurations. Stores it in `~/dns_config_backup.tar.bz2`. Filepath can be modified with variable `dns_backup_file_path`.
 * `dns_restore`: restores DNS server configuration from archive created with `dns_backup`.
 
-Example:
-```
-dns_install
-dns_backup
-dns_configure
-dns_add_domain
-dns_add_entry
-```
+Example sequence of actions:
+
+1. `dns_install`
+2. `dns_backup`
+3. `dns_configure`
+4. `dns_add_domain`
+5. `dns_add_entry`
 
