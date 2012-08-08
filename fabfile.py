@@ -28,15 +28,14 @@ def dns_configure(*args):
     print(env.dns_options_file_path)
     # Can't use fabric sed command because it doesn't support delete action.
     # Remove current content (both commented and uncommetnted).
-    #sudo("sed -i.bak -r -e '/forwarders \{/,/\}/ { /([0-9]+\.){3}[0-9]+/ d }' /etc/bind/named.conf.options")
-    local("sed -i.bak -r -e '/forwarders \{/,/\}/ { /([0-9]+\.){3}[0-9]+/ d }' %(dns_options_file_path)s" % env)
+    sudo("sed -i.bak -r -e '/forwarders \{/,/\}/ { /([0-9]+\.){3}[0-9]+/ d }' %(dns_options_file_path)s" % env)
     # Uncomment lines if this is first run configuration.
-    local("sed -i -e '/\/\/ forwarders {/,/\/\/ };/ s/\/\/ //' %(dns_options_file_path)s" % env)
+    sudo("sed -i -e '/\/\/ forwarders {/,/\/\/ };/ s/\/\/ //' %(dns_options_file_path)s" % env)
     # Insert custom DNS.
     dns_servers = list(args)
     dns_servers.reverse() # Appending results in reversed order, so need to neutralize it.
     for forward_dns in dns_servers:
-        local("""sed -i -e '/forwarders {/ a\
+        sudo("""sed -i -e '/forwarders {/ a\
                 \t%s;' %s""" % (forward_dns, env.dns_options_file_path))
 
 def dns_add_domain():
