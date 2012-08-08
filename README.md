@@ -62,9 +62,9 @@ To add public share to NFS and Samba run `add_public_share.sh` for each share. R
 
 Example sequence of actions:
 ```
-dns_install
-dns_backup
-dns_configure 8.8.8.8 8.8.4.4
-dns_add_domain
-dns_add_entry
+fab dns_install
+fab dns_backup
+fab dns_configure:8.8.8.8,8.8.4.4
+fab dns_add_domain
+fab dns_add_entry
 ```
