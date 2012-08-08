@@ -58,12 +58,13 @@ To add public share to NFS and Samba run `add_public_share.sh` for each share. R
 * `dns_install`: installs dns server.
 * `dns_backup`: makes a backup copy of current DNS server configurations. Stores it in `~/dns_config_backup.tar.bz2`. Filepath can be modified with variable `dns_backup_file_path`.
 * `dns_restore`: restores DNS server configuration from archive created with `dns_backup`.
+* `dns_configure <ip-address-of-dns-server>*`: configure forwarding DNS servers. If BIND doesn't know answer for DNS request it will forwards request to the specified DNS server. Probably that must be the DNS server provided by your ISP (it will provide the lest latency). Google DNS servers also can be used: 8.8.8.8 and 8.8.4.4.
 
 Example sequence of actions:
-
-1. `dns_install`
-2. `dns_backup`
-3. `dns_configure`
-4. `dns_add_domain`
-5. `dns_add_entry`
-
+```
+dns_install
+dns_backup
+dns_configure 8.8.8.8 8.8.4.4
+dns_add_domain
+dns_add_entry
+```
