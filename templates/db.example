@@ -1,0 +1,15 @@
+$TTL 604800
+; @ == %(domain)s.
+;   @ IN SOA <nameserver> <admin email> (
+@ IN SOA %(hostname)s.%(domain)s. %(admin_mail)s. (
+          1   ; Serial
+     604800   ; Refresh
+      86400   ; Retry
+    2419200   ; Expire
+     604800 ) ; Negative cache TTL
+@       NS      %(hostname)s.%(domain)s.
+@   IN  A       %(ip4)s
+@   IN  AAAA    %(ip6)s
+
+%(hostname)s    IN  A       %(ip4)s
+%(hostname)s    IN  AAAA    %(ip6)s

@@ -1,4 +1,5 @@
 from fabric.api import *
+from fabric.contrib.files import upload_template
 
 # Configuration variables.
 if 'dns_backup_file_path' not in env:
@@ -35,8 +36,9 @@ def dns_configure(*args):
                 %s;' %s""" % (forward_dns, env.dns_options_file_path))
 
 def dns_add_domain():
-    "domain name, network prefix (reversed), network prefix"
-    pass
+    "domain name, network prefix (reversed), network prefix, server hostname, domain admin"
+    context = {'hostname': 'gateway', 'domain': 'prostor', 'ip4': '192.168.2.1', 'ip6': '::1', 'admin_mail': 'kolesov.example.com'}
+    upload_template('templates/db.example', '~/db.example', context)
 
 def dns_add_entry():
     "domain, hostname, ipaddress"
