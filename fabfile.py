@@ -10,7 +10,7 @@ if 'dns_options_file_path' not in env:
 
 def dns_install():
     "Installs BIND9 DNS server to the system."
-    sudo('apt-get install bind9')
+    sudo('apt-get -y install bind9')
 
 def dns_backup():
     """Backup current Bind configuration files. Stores current BIND configuration
