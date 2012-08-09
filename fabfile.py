@@ -52,6 +52,6 @@ def dns_remove_domain():
     "Remove zone from DNS server configuration."
     pass    
 
-def dns_reconfigure():
-    "Reload configuration of DNS server."
-    pass
+def dns_reload():
+    "Reload DNS server to use new configuration."
+    sudo('service bind9 reload')

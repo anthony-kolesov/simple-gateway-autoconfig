@@ -68,6 +68,10 @@ This command are used to backup and restore current BIND9 server configuration. 
 
 `dns_configure <ip-address-of-dns-server>*`: configure forwarding DNS servers. If BIND doesn't know answer for DNS request it will forwards request to the specified DNS server. Probably that must be the DNS server provided by your ISP (it will provide the lest latency). Google DNS servers also can be used: 8.8.8.8 and 8.8.4.4.
 
+## dns_reload
+
+Reload current BIND9 configuration. It is required to run this action after configuration has been changed so server will use new configuration. Runs as a root and uses `service` tool.
+
 ## Example sequence of actions:
 
 ```
@@ -76,4 +80,5 @@ fab dns_backup
 fab dns_configure:8.8.8.8,8.8.4.4
 fab dns_add_domain
 fab dns_add_entry
+fab dns_reload
 ```
