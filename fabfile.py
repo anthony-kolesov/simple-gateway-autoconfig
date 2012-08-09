@@ -24,8 +24,6 @@ def dns_restore():
 
 def dns_configure(*args):
     "self hostname, self domain, admin email, self ip4 address, forwarding DNS srevers"
-    print(args)
-    print(env.dns_options_file_path)
     # Can't use fabric sed command because it doesn't support delete action.
     # Remove current content (both commented and uncommetnted).
     sudo("sed -i.bak -r -e '/forwarders \{/,/\}/ { /([0-9]+\.){3}[0-9]+/ d }' %(dns_options_file_path)s" % env)
@@ -36,7 +34,7 @@ def dns_configure(*args):
     dns_servers.reverse() # Appending results in reversed order, so need to neutralize it.
     for forward_dns in dns_servers:
         sudo("""sed -i -e '/forwarders {/ a\
-                \t%s;' %s""" % (forward_dns, env.dns_options_file_path))
+                %s;' %s""" % (forward_dns, env.dns_options_file_path))
 
 def dns_add_domain():
     "domain name, network prefix (reversed), network prefix"
